@@ -23,8 +23,17 @@ const searchBtn = document.getElementById('search-btn');
 const searchInput = document.getElementById('search-bar-choice');
 const searchDropdown = document.getElementById('search-bar-options');
 
+const surprisBtn = document.getElementById('surprise-btn');
+
+const allPokemon = [];
+
 function capitalize(word) {
   return word.charAt(0).toUpperCase() + word.slice(1);
+}
+
+function getRandomNumber() {
+  const randomnum = Math.floor(Math.random() * allPokemon.length)
+  return randomnum
 }
 
 function setStat(statEl, statBarEl, baseValue) {
@@ -89,10 +98,11 @@ async function findPokemon(name) {
 }
 
 async function getAllPokemons(){
-  await fetch('https://pokeapi.co/api/v2/pokemon?limit=100000&offset=0')
+  await fetch('https://pokeapi.co/api/v2/pokemon?limit=1000&offset=0')
     .then(response => response.json())
     .then(data => {
       data.results.forEach((pokemon) => {
+        allPokemon.push(pokemon.name);
         const option = document.createElement('option');
         option.value = pokemon.name;
         searchDropdown.appendChild(option);
@@ -105,7 +115,6 @@ function getDefaultPokemon(){
   findPokemon(DEFAULT_POKEMON);
 }
 
-
 searchBtn.addEventListener('click', () => {
   findPokemon(searchInput.value);
 })
@@ -117,5 +126,13 @@ searchInput.addEventListener('keypress', (event) => {
   }
 })
 
+surprisBtn.addEventListener('click', () => {
+  const randomIndex = getRandomNumber();
+  findPokemon(randomIndex);
+})
+
 getDefaultPokemon();
 getAllPokemons();
+
+/* bug 4: what happens if we type in 1000? */ 
+/* bug 5: what happens if we type in 900? */ 
