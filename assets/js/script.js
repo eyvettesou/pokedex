@@ -81,10 +81,12 @@ function resetPokedex(){
 }
 
 function updatePokedex(pokemonData){
+  /* bug 3: sprite is not a thing; console log the data to check */
+  sprite.src = pokemonData.sprite;
   sprite.src = pokemonData.sprites.front_default;
   pokeName.textContent = capitalize(pokemonData.name);
   pokeNumber.textContent = pokemonData.id;
-  /* bug 3: typo type instead of types */
+  /* bug 4: typo type instead of types */
   // type.textContent = data.type.type.name;
   pokeType.textContent = capitalize(pokemonData.types[0].type.name);
   setStats(pokemonData.stats);
@@ -143,5 +145,5 @@ surprisBtn.addEventListener('click', () => {
 getDefaultPokemon();
 getAllPokemons();
 
-/* bug 4: what happens if we type in 1000? */ 
-/* bug 5: what happens if we type in 900? */ 
+/* bug 5: what happens if we type in 1000? */ 
+/* bug 6: what happens if we type in 900? */ 
