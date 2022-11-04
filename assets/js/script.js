@@ -67,7 +67,11 @@ function setStats(stats) {
   })
 }
 
-function resetStats(){
+function resetPokedex(){
+  sprite.src = './assets/images/confused-pikachu.png';
+  pokeName.textContent = 'Not found';
+  pokeNumber.textContent = "???";
+  pokeType.textContent = "???"
   setStat(hp, hpBar, 0);
   setStat(attack, attackBar, 0);
   setStat(defense, defenseBar, 0);
@@ -76,25 +80,32 @@ function resetStats(){
   setStat(speed, speedBar, 0);
 }
 
+function updatePokedex(pokemonData){
+  sprite.src = pokemonData.sprites.front_default;
+  pokeName.textContent = capitalize(pokemonData.name);
+  pokeNumber.textContent = pokemonData.id;
+  /* bug 3: typo type instead of types */
+  // type.textContent = data.type.type.name;
+  pokeType.textContent = capitalize(pokemonData.types[0].type.name);
+  setStats(pokemonData.stats);
+}
+
 async function findPokemon(name) {
   await fetch(`https://pokeapi.co/api/v2/pokemon/${name}`)
     .then((response) => response.json())
     .then((data) => {
-      sprite.src = data.sprites.front_default;
-      pokeName.textContent = capitalize(data.name);
-      pokeNumber.textContent = data.id;
-      /* bug 3: typo type instead of types */
-      // type.textContent = data.type.type.name;
-      pokeType.textContent = capitalize(data.types[0].type.name);
-      setStats(data.stats);
+      updatePokedex(data);
+      searchInput.value = "";
     })
     .catch(() => {
-      sprite.src = './assets/images/confused-pikachu.png';
-      pokeName.textContent = 'Not found';
-      pokeNumber.textContent = "???";
-      pokeType.textContent = "???"
-      resetStats();
+      resetPokedex();
     })
+}
+
+function createDropdownItem(pokemonName){
+  const option = document.createElement('option');
+  option.value = pokemonName;
+  searchDropdown.appendChild(option);
 }
 
 async function getAllPokemons(){
@@ -103,9 +114,7 @@ async function getAllPokemons(){
     .then(data => {
       data.results.forEach((pokemon) => {
         allPokemon.push(pokemon.name);
-        const option = document.createElement('option');
-        option.value = pokemon.name;
-        searchDropdown.appendChild(option);
+        createDropdownItem(pokemon.name);
       })
     })
 }
