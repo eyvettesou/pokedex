@@ -3,7 +3,7 @@
 const sprite = document.getElementById('poke-sprite');
 const pokeName = document.getElementById('poke-name');
 const pokeNumber = document.getElementById('poke-number');
-const type = document.getElementById('poke-type');
+const pokeType = document.getElementById('poke-type');
 /* bug 2: write wrong id */
 // const hp = document.getElementById('poke-hp');
 const hp = document.getElementById('poke-stats-hp');
@@ -18,6 +18,9 @@ const defenseBar = document.getElementById('stat-bar-def');
 const spAttackBar = document.getElementById('stat-bar-spa');
 const spDefenseBar = document.getElementById('stat-bar-spd');
 const speedBar = document.getElementById('stat-bar-speed');
+
+const searchBtn = document.getElementById('search-btn');
+const searchInput = document.getElementById('search-bar');
 
 function capitalize(word) {
   return word.charAt(0).toUpperCase() + word.slice(1);
@@ -56,9 +59,10 @@ function setStats(stats) {
   })
 }
 
-async function getDefaultPokemon () {
-  const DEFAULT_POKEMON = 'eevee'
-  await fetch(`https://pokeapi.co/api/v2/pokemon/${DEFAULT_POKEMON}`)
+
+
+async function findPokemon(name) {
+  await fetch(`https://pokeapi.co/api/v2/pokemon/${name}`)
     .then((response) => response.json())
     .then((data) => {
       sprite.src = data.sprites.front_default;
@@ -66,9 +70,38 @@ async function getDefaultPokemon () {
       pokeNumber.textContent = data.id;
       /* bug 3: typo type instead of types */
       // type.textContent = data.type.type.name;
-      type.textContent = capitalize(data.types[0].type.name);
+      pokeType.textContent = capitalize(data.types[0].type.name);
       setStats(data.stats);
+    })
+    .catch(() => {
+      sprite.src = './assets/images/confused-pikachu.png';
+      pokeName.textContent = 'Not found';
+      pokeNumber.textContent = "???";
+      pokeType.textContent = "???"
+      const baseStat = '???';
+      const statPercentage = '0%';
+      hp.textContent = baseStat;
+      hpBar.style.width = statPercentage;
+      attack.textContent = baseStat;
+      attackBar.style.width = statPercentage;
+      defense.textContent = baseStat;
+      defenseBar.style.width = statPercentage;
+      spAttack.textContent = baseStat;
+      spAttackBar.style.width = statPercentage;
+      spDefense.textContent = baseStat;
+      spDefenseBar.style.width = statPercentage;
+      speed.textContent = baseStat;
+      speedBar.style.width = statPercentage;
     })
 }
 
+function getDefaultPokemon(){
+  const DEFAULT_POKEMON = 'eevee';
+  findPokemon(DEFAULT_POKEMON);
+}
+
 getDefaultPokemon();
+
+searchBtn.addEventListener('click', () => {
+  findPokemon(searchInput.value);
+})
