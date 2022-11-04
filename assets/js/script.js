@@ -20,46 +20,52 @@ const spDefenseBar = document.getElementById('stat-bar-spd');
 const speedBar = document.getElementById('stat-bar-speed');
 
 const searchBtn = document.getElementById('search-btn');
-const searchInput = document.getElementById('search-bar');
+const searchInput = document.getElementById('search-bar-choice');
+const searchDropdown = document.getElementById('search-bar-options');
 
 function capitalize(word) {
   return word.charAt(0).toUpperCase() + word.slice(1);
 }
 
+function setStat(statEl, statBarEl, baseValue) {
+  const statPercentage = `${(baseValue/160) * 100}%`;
+    statEl.textContent = baseValue;
+    statBarEl.style.width = statPercentage;
+}
+
 function setStats(stats) {
   stats.forEach(stat => {
-    const statName = stat.stat.name;
+    const name = stat.stat.name;
     const baseStat = stat.base_stat;
-    const statPercentage = `${(baseStat/160) * 100}%`;
-
-    if(statName === "hp"){
-      hp.textContent = baseStat;
-      hpBar.style.width = statPercentage;
+    if(name === "hp"){
+      setStat(hp, hpBar, baseStat);
     }
-    if(statName === "attack"){
-      attack.textContent = baseStat;
-      attackBar.style.width = statPercentage;
+    if(name === "attack"){
+      setStat(attack, attackBar, baseStat);
     }
-    if(statName === "defense"){
-      defense.textContent = baseStat;
-      defenseBar.style.width = statPercentage;
+    if(name === "defense"){
+      setStat(defense, defenseBar, baseStat);
     }
-    if(statName === "special-attack"){
-      spAttack.textContent = baseStat;
-      spAttackBar.style.width = statPercentage;
+    if(name === "special-attack"){
+      setStat(spAttack, spAttackBar, baseStat);
     }
-    if(statName === "special-defense"){
-      spDefense.textContent = baseStat;
-      spDefenseBar.style.width = statPercentage;
+    if(name === "special-defense"){
+      setStat(spDefense, spDefenseBar, baseStat);
     }
-    if(statName === "speed"){
-      speed.textContent = baseStat;
-      speedBar.style.width = statPercentage;
+    if(name === "speed"){
+      setStat(speed, speedBar, baseStat);
     }
   })
 }
 
-
+function resetStats(){
+  setStat(hp, hpBar, 0);
+  setStat(attack, attackBar, 0);
+  setStat(defense, defenseBar, 0);
+  setStat(spAttack, spAttackBar, 0);
+  setStat(spDefense, spDefenseBar, 0);
+  setStat(speed, speedBar, 0);
+}
 
 async function findPokemon(name) {
   await fetch(`https://pokeapi.co/api/v2/pokemon/${name}`)
@@ -78,20 +84,19 @@ async function findPokemon(name) {
       pokeName.textContent = 'Not found';
       pokeNumber.textContent = "???";
       pokeType.textContent = "???"
-      const baseStat = '???';
-      const statPercentage = '0%';
-      hp.textContent = baseStat;
-      hpBar.style.width = statPercentage;
-      attack.textContent = baseStat;
-      attackBar.style.width = statPercentage;
-      defense.textContent = baseStat;
-      defenseBar.style.width = statPercentage;
-      spAttack.textContent = baseStat;
-      spAttackBar.style.width = statPercentage;
-      spDefense.textContent = baseStat;
-      spDefenseBar.style.width = statPercentage;
-      speed.textContent = baseStat;
-      speedBar.style.width = statPercentage;
+      resetStats();
+    })
+}
+
+async function getAllPokemons(){
+  await fetch('https://pokeapi.co/api/v2/pokemon?limit=100000&offset=0')
+    .then(response => response.json())
+    .then(data => {
+      data.results.forEach((pokemon) => {
+        const option = document.createElement('option');
+        option.value = pokemon.name;
+        searchDropdown.appendChild(option);
+      })
     })
 }
 
@@ -100,8 +105,17 @@ function getDefaultPokemon(){
   findPokemon(DEFAULT_POKEMON);
 }
 
-getDefaultPokemon();
 
 searchBtn.addEventListener('click', () => {
   findPokemon(searchInput.value);
 })
+
+searchInput.addEventListener('keypress', (event) => {
+  if (event.key === "Enter") {
+    event.preventDefault();
+    findPokemon(searchInput.value);
+  }
+})
+
+getDefaultPokemon();
+getAllPokemons();

@@ -69,6 +69,10 @@ h1 {
   padding: 0px 12px;
 }
 
+#search-btn:hover {
+  background-color: #ddd;
+}
+
 #poke-content {
   display: flex;
   flex-direction: column;
