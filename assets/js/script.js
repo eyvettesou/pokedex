@@ -12,6 +12,12 @@ const defense = document.getElementById('poke-stats-def');
 const spAttack = document.getElementById('poke-stats-spa');
 const spDefense = document.getElementById('poke-stats-spd');
 const speed = document.getElementById('poke-stats-speed');
+const hpBar = document.getElementById('stat-bar-hp');
+const attackBar = document.getElementById('stat-bar-atk');
+const defenseBar = document.getElementById('stat-bar-def');
+const spAttackBar = document.getElementById('stat-bar-spa');
+const spDefenseBar = document.getElementById('stat-bar-spd');
+const speedBar = document.getElementById('stat-bar-speed');
 
 function capitalize(word) {
   return word.charAt(0).toUpperCase() + word.slice(1);
@@ -19,23 +25,33 @@ function capitalize(word) {
 
 function setStats(stats) {
   stats.forEach(stat => {
-    if(stat.stat.name === "hp"){
-      hp.textContent = stat.base_stat;
+    const statName = stat.stat.name;
+    const baseStat = stat.base_stat;
+    const statPercentage = `${(baseStat/200) * 100}%`;
+
+    if(statName === "hp"){
+      hp.textContent = baseStat;
+      hpBar.style.width = statPercentage;
     }
-    if(stat.stat.name === "attack"){
-      attack.textContent = stat.base_stat;
+    if(statName === "attack"){
+      attack.textContent = baseStat;
+      attackBar.style.width = statPercentage;
     }
-    if(stat.stat.name === "defense"){
-      defense.textContent = stat.base_stat;
+    if(statName === "defense"){
+      defense.textContent = baseStat;
+      defenseBar.style.width = statPercentage;
     }
-    if(stat.stat.name === "special-attack"){
-      spAttack.textContent = stat.base_stat;
+    if(statName === "special-attack"){
+      spAttack.textContent = baseStat;
+      spAttackBar.style.width = statPercentage;
     }
-    if(stat.stat.name === "special-defense"){
-      spDefense.textContent = stat.base_stat;
+    if(statName === "special-defense"){
+      spDefense.textContent = baseStat;
+      spDefenseBar.style.width = statPercentage;
     }
-    if(stat.stat.name === "speed"){
-      speed.textContent = stat.base_stat;
+    if(statName === "speed"){
+      speed.textContent = baseStat;
+      speedBar.style.width = statPercentage;
     }
   })
 }
