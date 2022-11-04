@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="Pokedex" content="Pokedex" />
+  <!-- Google Fonts -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic">
+
+  <!-- CSS Reset -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.css">
+
+  <!-- Milligram CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/milligram/1.4.1/milligram.css">
+
+  <link rel="stylesheet" href="./assets/css/style.css">
+  <title>Pokedex</title>
+</head>
+
+  <body>
+    <div id="main-container">
+      <h1>Pokedex</h1>
+      <div id="main-content">
+        <div id="poke-preview">
+          <img id="poke-sprite" src=""/>
+        </div>
+        <div id="poke-content">
+          <div id="search-container">
+            <input id="search-bar" type="text"/>
+            <button id="search-btn">
+              <img src="./assets/icons/magnifying-glass.svg" width="90%" height="90%"/>
+            </button>
+          </div>
+          <div id="poke-details">
+            <h3>
+              #<span id="poke-number"></span>
+              <span id="poke-name"></span>
+            </h3>
+            <div class="information">
+              TYPE: <span id="poke-type"></span>
+            </div>
+            <div class="information">
+              BASE STATS:
+                <ul id="poke-stats">
+                  <li>HP: <span id="poke-stats-hp"></span></li>
+                  <li>ATTACK: <span id="poke-stats-atk"></span></li>
+                  <li>DEFENSE: <span id="poke-stats-def"></span></li>
+                  <li>SP ATTACK: <span id="poke-stats-spa"></span></li>
+                  <li>SP DEFENSE: <span id="poke-stats-spd"></span></li>
+                  <li>SPEED: <span id="poke-stats-speed"></span></li>
+                </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="./assets/js/script.js"></script>
+  </body>
+
+</html>
