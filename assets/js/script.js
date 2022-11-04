@@ -30,7 +30,7 @@ function setStats(stats) {
   stats.forEach(stat => {
     const statName = stat.stat.name;
     const baseStat = stat.base_stat;
-    const statPercentage = `${(baseStat/200) * 100}%`;
+    const statPercentage = `${(baseStat/160) * 100}%`;
 
     if(statName === "hp"){
       hp.textContent = baseStat;
